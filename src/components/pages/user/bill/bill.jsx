@@ -8,7 +8,7 @@ import Loader from "@/components/ui/loader";
 import { useBillMutation } from "@/services/billApi";
 import img1 from "../../../../assets/img/layout/leaf-branch-1.png";
 import img2 from "../../../../assets/img/layout/leaf-branch-2.png";
-import MapPicker from "./MapPicker";
+import MapPicker from "./mapPicker.jsx";
 import dayjs from "dayjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
