@@ -61,14 +61,7 @@ body{
         --shadow-shadowSmallImg:  drop-shadow(0 4px 16px hsla(353, 100%, 8%, .2));
         --shadow-shadowBigImg:  drop-shadow(0 8px 24px hsla(353, 100%, 8%, .2));
 }
-/* .mySwiper{
-  padding-left: 173px !important;
-}
-.imgHome{
-  width: 230px !important;
-  height: 230px !important;
-  object-fit: cover !important;
- } */
+
 
 
 @theme inline {

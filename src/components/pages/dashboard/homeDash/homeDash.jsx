@@ -1,16 +1,4 @@
-// import React from 'react'
-// import CardStatistics from '../../../ui/cardStatistics';
-// function HomeDash() {
-//   return (
-//     <div className="min-h-scree">
-//       <div className="h-[500px]  flex items-center justify-center">
-//         <CardStatistics />
-//       </div>
-//     </div>
-//   );
-// }
 
-// export default HomeDash
 import React, { useEffect, useState } from "react";
 import {
   FaUsers,

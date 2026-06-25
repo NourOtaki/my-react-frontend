@@ -22,36 +22,6 @@ function Register() {
     AOS.init();
   }, []);
 
-//  const handleRegister =  async (values) => {
-//   const { username, email, password, confirmPassword } = values;
-//     if (password !== confirmPassword) {
-//       alert("كلمتا المرور غير متطابقتين!");
-//       return;
-//     }
-
-//     try {
-//       const res = await axios.post(
-//         "http://127.0.0.1:8000/api/register",
-//         {
-//           name:username,
-//           email,
-//           password,
-//           password_confirmation:confirmPassword,
-//         },
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         },
-//       );
-
-//       alert("تم التسجيل بنجاح!");
-//     } catch (err) {
-//       console.error(err);
-//       console.log(err.response?.data);
-//       alert("فشل في التسجيل");
-//     }
-//   };
   const [Register, { isLoading }] = useRegisterMutation();
 
   return (

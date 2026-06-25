@@ -16,10 +16,7 @@ const themeSlice = createSlice({
       state.mode = state.mode === "light" ? "dark" : "light";
       localStorage.setItem("theme", state.mode);
     },
-    // setTheme: (state, action) => {
-    //   state.mode = action.payload;
-    //   localStorage.setItem("theme", state.mode);
-    // },
+  
   },
 });
 
