@@ -7,43 +7,43 @@ import { Autoplay, Pagination } from "swiper/modules";
 import Aos from "aos";
 import Loader from "@/components/ui/loader";
 import axios from "axios";
-
+import { comment} from "../../../../data/comment";
 function DisplayContact() {
   useEffect(() => {
     Aos.init();
   }, []);
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(comment);
   const [activeIndex, setActiveIndex] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/evaluations`,
-        );
-        // ⚡ مهم: الوصول إلى المصفوفة الفعلية
-        setData(response.data.data || []);
-      } catch (err) {
-        setError(err.response?.data?.message || err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://127.0.0.1:8000/api/evaluations`,
+  //       );
+  //       // ⚡ مهم: الوصول إلى المصفوفة الفعلية
+  //       setData(response.data.data || []);
+  //     } catch (err) {
+  //       setError(err.response?.data?.message || err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, []);
+  //   fetchUsers();
+  // }, []);
 
-  if (loading)
-    return (
-      <div className="relative top-10 my-10">
-        <Loader />
-      </div>
-    );
-  if (error)
-    return <div className="mt-8 text-center text-red-600">Error: {error}</div>;
+  // if (loading)
+  //   return (
+  //     <div className="relative top-10 my-10">
+  //       <Loader />
+  //     </div>
+  //   );
+  // if (error)
+  //   return <div className="mt-8 text-center text-red-600">Error: {error}</div>;
 
   const handleSlideChange = (swiper) => {
     setActiveIndex(swiper.realIndex);
@@ -88,23 +88,17 @@ function DisplayContact() {
           >
             <div className="group min-h-96 w-[250px] rounded border-1 border-red-200 transition duration-[.6s] hover:shadow-[0_3px_10px_rgba(0,0,0,0.2)]">
               <div className="flex justify-center">
-                {item.user?.profile_image ? (
-                  <img
-                    className="my-4 size-42 rounded-[50%] group-hover:border-3 group-hover:border-red-200"
-                    src={`http://127.0.0.1:8000/storage/${item.user.profile_image}`}
-                    alt={item.user.name}
-                  />
-                ) : (
+              
                   <img
                     className="my-4 size-42 rounded-[50%] group-hover:border-3 group-hover:border-red-200"
                     src={img1}
                     alt="default user"
                   />
-                )}
+                
               </div>
               <div className="text-center">
                 <h3 className="font-Carter text-2xl capitalize">
-                  <a href="email">{item.user?.name}</a>
+                  <a href="email">{item.name}</a>
                 </h3>
                 <div className="my-2">
                   {Array.from({ length: 5 }, (_, i) => (

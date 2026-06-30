@@ -1,7 +1,7 @@
  import React, { useEffect, useState } from 'react';
  import { Link } from 'react-router';
  import axios from 'axios';
-//  import { categories } from "../../../../data/data";
+ import { meals } from "../../../../data/meal";
 //  import img1 from "../../../../assets/img/categories/cimg5.jpg";
  import Button from '../../../ui/button';
 import { useParams } from "react-router";
@@ -9,34 +9,34 @@ import Loader from '../../../ui/loader';
 
  function Type() {
   const { typeId } = useParams();
-   const [users, setUsers] = useState([]);
+   const [users, setUsers] = useState(meals);
   // const type = users.find((meal) => meal.id === parseInt(typeId));
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
-   useEffect(() => {
-     const fetchUsers = async () => {
-       try {
-         const response = await axios.get(
-           `http://127.0.0.1:8000/api/showAllMeal/${typeId}`,
-         );
-        setUsers(response.data);
-        console.log(users.image);
-        console.log("data ", users);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //  useEffect(() => {
+  //    const fetchUsers = async () => {
+  //      try {
+  //        const response = await axios.get(
+  //          `http://127.0.0.1:8000/api/showAllMeal/${typeId}`,
+  //        );
+  //       setUsers(response.data);
+  //       console.log(users.image);
+  //       console.log("data ", users);
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, []);
-    if (loading) return (
-      <div className="relative top-10 my-10">
-        <Loader />
-      </div>
-    );
-    if (error) return <div>Error: {error}</div>;
+  //   fetchUsers();
+  // }, []);
+  //   if (loading) return (
+  //     <div className="relative top-10 my-10">
+  //       <Loader />
+  //     </div>
+  //   );
+  //   if (error) return <div>Error: {error}</div>;
   // const [data, setData] = useState(categories);
   return (
     <>
@@ -51,7 +51,7 @@ import Loader from '../../../ui/loader';
               <img
                 className="m-4 lg:size-42 md:size-36 size-38 rounded-2xl"
                 // src={img1}
-                src={`http://127.0.0.1:8000/storage/${meal.image}`}
+                src={meal.image}
               ></img>
               <div className="relative top-14 lg:mx-13">
                 <p className="font-Carter left-10 mb-5 text-center md:text-xl lg:text-2xl font-bold">

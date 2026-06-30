@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
-// import { categories } from "../../../../data/data";
+import { categories } from "../../../../data/categories";
 import img1 from "../../../../assets/img/categories/Cimg1.png";
 import imgLine from "../../../../assets/img/Line 9.png";
 import Button from "../../../ui/button";
@@ -13,29 +13,29 @@ function Categories() {
       // تهيئة AOS
       Aos.init();
     }, []);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(categories);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/showAllCategory",
-        );
-        setUsers(response.data);
-        console.log(users.image);
-        console.log("data ", users);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://127.0.0.1:8000/api/showAllCategory",
+  //       );
+  //       setUsers(response.data);
+  //       console.log(users.image);
+  //       console.log("data ", users);
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, []);
+  //   fetchUsers();
+  // }, []);
   // if (loading) return <div className="relative top-10 my-10"><Loader/></div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
   // const [data, setData] = useState(categories);
   return (
     <div
@@ -53,7 +53,7 @@ function Categories() {
                 <img
                   className="relative m-3 h-36 w-36 md:-left-0.5 lg:left-0 rounded-[50%]"
                   // src={img1}
-                  src={`http://127.0.0.1:8000/storage/${item.image}`}
+                  src={item.image}
                 ></img>
               </div>
               <div className="relative top-10 px-4 md:px-0">

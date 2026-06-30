@@ -9,26 +9,32 @@ import "aos/dist/aos.css";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { meals } from "../../../../data/meal";
 
 import { useAddToFavoriteMutation } from "@/services/favoriteApi";
 import { useAddToCartMutation } from "@/services/addToCartApi";
 import { useGetFavoriteMutation } from "@/services/getFavoriteApi";
 import img1 from "../../../../assets/img/book.png";
+ import { type } from "../../../../data/type";
 
 function Details() {
   useEffect(() => {
     AOS.init();
   }, []);
+  const { typeId } = useParams();
+  const { detailsId } = useParams();
 
+  const Id =detailsId-1
+  console.log("id",Id)
   const [addToCart] = useAddToCartMutation();
   const [addToFavorite] = useAddToFavoriteMutation();
   const [getFavorite] = useGetFavoriteMutation();
-  const { detailsId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const userId = user?.userID ?? null;
 
-  const [meal, setMeal] = useState(null);
-  const [types, setTypes] = useState([]);
+  const [meal, setMeal] = useState(meals[Id]);
+
+  const [types, setTypes] = useState(type);
   const [selectedType, setSelectedType] = useState(null);
   const [trueType, setTrueType] = useState(false);
   const [idType, setIdType] = useState(null);
@@ -40,98 +46,79 @@ function Details() {
   const [loadingTypes, setLoadingTypes] = useState(true);
 
   // Fetch meal
-  useEffect(() => {
-    const fetchMeal = async () => {
-      try {
-        const res = await axios.get(
-          `http://127.0.0.1:8000/api/showOneMeal/${detailsId}`,
-        );
-        setMeal(res.data);
-      } catch {
-        toast.error("Failed to fetch meal data");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMeal();
-  }, [detailsId]);
+  // useEffect(() => {
+  //   const fetchMeal = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://127.0.0.1:8000/api/showOneMeal/${detailsId}`,
+  //       );
+  //       setMeal(res.data);
+  //     } catch {
+  //       toast.error("Failed to fetch meal data");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchMeal();
+  // }, [detailsId]);
 
-  // Fetch types
-  useEffect(() => {
-    if (meal) {
-      const fetchTypes = async () => {
-        try {
-          const res = await axios.get(
-            `http://127.0.0.1:8000/api/showAllTypesMeals/${detailsId}`,
-          );
-          setTypes(res.data);
-        } catch {
-          toast.error("Failed to fetch meal types");
-        } finally {
-          setLoadingTypes(false);
-        }
-      };
-      fetchTypes();
-    }
-  }, [meal, detailsId]);
+  // // Fetch types
+  // useEffect(() => {
+  //   if (meal) {
+  //     const fetchTypes = async () => {
+  //       try {
+  //         const res = await axios.get(
+  //           `http://127.0.0.1:8000/api/showAllTypesMeals/${detailsId}`,
+  //         );
+  //         setTypes(res.data);
+  //       } catch {
+  //         toast.error("Failed to fetch meal types");
+  //       } finally {
+  //         setLoadingTypes(false);
+  //       }
+  //     };
+  //     fetchTypes();
+  //   }
+  // }, [meal, detailsId]);
 
-  // Fetch favorites
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      if (!user) return;
-      try {
-        const res = await getFavorite().unwrap();
-        setFavorites(res.data || []);
-      } catch {
-        console.error("Failed to fetch favorites");
-      }
-    };
-    fetchFavorites();
-  }, [user]);
+  // // Fetch favorites
+  // useEffect(() => {
+  //   const fetchFavorites = async () => {
+  //     if (!user) return;
+  //     try {
+  //       const res = await getFavorite().unwrap();
+  //       setFavorites(res.data || []);
+  //     } catch {
+  //       console.error("Failed to fetch favorites");
+  //     }
+  //   };
+  //   fetchFavorites();
+  // }, [user]);
 
-  if (loading || loadingTypes || !meal) return <Loader />;
+  // if (loading || loadingTypes || !meal) return <Loader />;
+  const [isFav, setIsFav] = useState(false);
 
-  const isFav = favorites.some((item) => item.meal_id === meal.id);
 
   const handleFavoriteToggle = async () => {
-    if (!user) return toast.info("Please log in first");
-    try {
-      if (isFav) {
-        const favItem = favorites.find((item) => item.meal_id === meal.id);
-        await axios.delete(
-          `http://127.0.0.1:8000/api/deletefavorites/${favItem.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-            },
-          },
-        );
-        setFavorites(favorites.filter((item) => item.id !== favItem.id));
-        toast.success("Removed from favorites");
-      } else {
-        const res = await addToFavorite({
-          meal_id: meal.id,
-          user_id: userId,
-        }).unwrap();
-        setFavorites([...favorites, { meal_id: meal.id, id: res.id }]);
-        toast.success("Added to favorites");
-      }
-    } catch {
-      toast.error("Failed to update favorites");
+    if(isFav){
+      setIsFav(false)
+    }else{
+            setIsFav(true)
+
     }
   };
 
-  const createOrder = async (mealId, typeId = null) => {
-    if (!user) return toast.info("Please log in first");
-    try {
-      const payload = { quantity: 1, meal_id: mealId };
-      if (typeId) payload.type_meal_id = typeId;
-      await addToCart(payload).unwrap();
-      toast.success("Added to cart successfully");
-    } catch {
-      toast.error("Failed to add product to cart");
-    }
-  };
+  // const createOrder = async (mealId, typeId = null) => {
+  //   if (!user) return toast.info("Please log in first");
+  //   try {
+  //     const payload = { quantity: 1, meal_id: mealId };
+  //     if (typeId) payload.type_meal_id = typeId;
+  //     await addToCart(payload).unwrap();
+  //     toast.success("Added to cart successfully");
+  //   } catch {
+  //     toast.error("Failed to add product to cart");
+  //   }
+  // };
 
   const handleChangeType = (item) => {
     setSelectedType(item);
@@ -139,6 +126,7 @@ function Details() {
     setIdType(item.id);
     setIsOpen(false);
   };
+  console.log("meal", meal)
 
   // حساب النجوم
   const rate = Math.floor(meal.stars);
@@ -183,9 +171,8 @@ function Details() {
             <div className="relative left-10 w-[300px] py-5 shadow-2xl sm:w-[265px] sm:skew-y-4 md:w-[310px] lg:w-[430px] xl:w-[555px]">
               <img
                 className="relative left-4 h-[390px] w-[260px] rounded-2xl sm:w-[210px] md:w-[270px] lg:w-[380px] xl:w-[500px]"
-                src={`http://127.0.0.1:8000/storage/${
-                  trueType ? selectedType?.image : meal.image
-                }`}
+                src={
+                  trueType ? selectedType?.image : meal.image}
                 alt={meal.type}
               />
             </div>
@@ -202,8 +189,9 @@ function Details() {
           <div className="relative -top-62 left-9 -mb-50 h-[430px] w-[300px] px-10 py-16 shadow-2xl sm:top-0 sm:-left-12 sm:mb-0 sm:w-[265px] sm:-skew-y-4 md:w-[310px] lg:w-[430px] xl:w-[565px] xl:px-20">
             <div className="flex justify-between py-3">
               <h3 className="text-2xl font-medium xl:text-3xl">{meal.type}</h3>
-              <button className="border-0" onClick={handleFavoriteToggle}>
-                <i
+              <button className="border-0 " onClick={handleFavoriteToggle}>
+                
+                   <i
                   className={`${
                     isFav ? "ri-heart-3-fill" : "ri-heart-3-line"
                   } text-firstColor cursor-pointer text-4xl`}
@@ -227,7 +215,7 @@ function Details() {
                   onClick={() => setIsOpen(!isOpen)}
                   className="my-2 flex w-full cursor-pointer justify-between rounded border-2 border-red-200 p-2 text-xl font-medium shadow-sm select-none xl:text-3xl"
                 >
-                  {selectedType?.name || meal.type}
+                  {selectedType?.type || meal.type}
                   <i className="ri-corner-down-left-line text-firstColor"></i>
                 </div>
                 {isOpen && (
@@ -236,15 +224,15 @@ function Details() {
                       <div
                         key={item.id}
                         onClick={() => handleChangeType(item)}
-                        onMouseEnter={() => setHoveredType(item.name)}
+                        onMouseEnter={() => setHoveredType(item.type)}
                         onMouseLeave={() => setHoveredType("")}
                         className={`cursor-pointer p-2 text-xl hover:bg-red-500 hover:text-white ${
-                          hoveredType === item.name
+                          hoveredType === item.type
                             ? "bg-firstColor text-white"
                             : "selected Type"
                         }`}
                       >
-                        {item.name}
+                        {item.type}
                       </div>
                     ))}
                   </div>

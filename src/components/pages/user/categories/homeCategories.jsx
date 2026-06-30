@@ -10,34 +10,34 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
 import Loader from "../../../ui/loader";
-// import { categories } from "../../../../data/data";
+import { categories } from "../../../../data/categories";
 function HomeCategories() {
   useEffect(() => {
     // تهيئة AOS
     AOS.init();
   }, []);
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(categories);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const response = await axios.get(
-            "http://127.0.0.1:8000/api/showAllCategory",
-          );
-          setUsers(response.data);
-          console.log(users.image);
-          console.log("data ", users);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
+    // useEffect(() => {
+    //   const fetchUsers = async () => {
+    //     try {
+    //       const response = await axios.get(
+    //         "http://127.0.0.1:8000/api/showAllCategory",
+    //       );
+    //       setUsers(response.data);
+    //       console.log(users.image);
+    //       console.log("data ", users);
+    //     } catch (err) {
+    //       setError(err.message);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
 
-      fetchUsers();
-    }, []);
-    if (loading) return <div className="relative top-10 my-10"><Loader/></div>;
+    //   fetchUsers();
+    // }, []);
+    // if (loading) return <div className="relative top-10 my-10"><Loader/></div>;
     if (error) return <div>Error: {error}</div>;
   // const [data, setData] = useState(categories);
   return (
@@ -121,10 +121,12 @@ function HomeCategories() {
           satisfy your food cravings.
         </div>
         <div className="flex gap-4 py-4">
+ 
           {users.slice(0, 3).map((data, index) => (
             <div key={index} className="rounded-lg">
               <img
-                src={`http://127.0.0.1:8000/storage/${data.image}`}
+              src={data.image}
+                // src={`http://127.0.0.1:8000/storage/${data.image}`}
                 className="size-16 rounded"
               />
               <p className="">{data.type}</p>
